@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="pagination">
+    <nav th:with="buttonsNumber=5">
+        <ul class="pagination" th:with="pagesListSize=${#lists.size(pagesList)}, halfButtonsNumber = ${T(java.lang.Math).floor(__(*{buttonsNumber}/2)__)}">
+
+            <li th:if="${currentPage}>1" class="page-item">
+                <a class="btn btn-primary btn-icon-table mr-1"
+                   th:href="@{${endpoint}(page=${currentPage}-1, __(*{searchBy} != null) ? 'searchBy=*{searchBy},' : ''__ __(*{search} != null) ? 'search=*{search},' : ''__ __(*{orderDirection} == 'DESC') ? 'orderDirection=DESC' : ''__ __(*{orderDirection} == 'ASC' ) ? 'orderDirection=ASC' : ''__)}">Atrás</a>
+            </li>
+
+            <li th:if="${pagesListSize}>${buttonsNumber} and ((${currentPage}-${halfButtonsNumber} >= 1 and ${buttonsNumber}%2==0) or (${currentPage}-${halfButtonsNumber} > 1 and ${buttonsNumber}%2!=0))" class="page-item">
+                <a class="btn btn-primary btn-icon-table mr-1"
+                   th:href="@{${endpoint}(page=1, __(*{searchBy} != null) ? 'searchBy=*{searchBy},' : ''__ __(*{search} != null) ? 'search=*{search},' : ''__ __(*{orderDirection} == 'DESC') ? 'orderDirection=DESC' : ''__ __(*{orderDirection} == 'ASC' ) ? 'orderDirection=ASC' : ''__)}">1</a>
+            </li>
+
+            <li th:if="${pagesListSize}>${buttonsNumber} and ((${currentPage}-${halfButtonsNumber} >= 1 and ${buttonsNumber}%2==0) or (${currentPage}-${halfButtonsNumber} > 1 and ${buttonsNumber}%2!=0))" class="page-item">
+                <a class="btn btn-primary btn-icon-table mr-1 disabled">...</a>
+            </li>
+
+            <li class="page-item" th:each="page : ${pagesList}"
+                th:if= "(${currentPage}+${halfButtonsNumber}<=${buttonsNumber} and ${page}<=${buttonsNumber}) or
+                        (${currentPage}+${halfButtonsNumber}>${buttonsNumber} and ${currentPage}!=${pagesListSize} and ${buttonsNumber}%2==0 and ${currentPage}+${halfButtonsNumber}<=${pagesListSize} and ${page}>=${currentPage}-${halfButtonsNumber}+1 and ${page}<=${currentPage}+${halfButtonsNumber}) or
+                        (${currentPage}+${halfButtonsNumber}>${buttonsNumber} and ${currentPage}!=${pagesListSize} and ${buttonsNumber}%2!=0 and ${currentPage}+${halfButtonsNumber}<=${pagesListSize} and ${page}>=${currentPage}-${halfButtonsNumber} and ${page}<=${currentPage}+${halfButtonsNumber}) or
+                        (${currentPage}+${halfButtonsNumber}>${buttonsNumber} and ${currentPage}!=${pagesListSize} and ${buttonsNumber}%2==0 and ${currentPage}+${halfButtonsNumber}>${pagesListSize} and ${page}>=${pagesListSize}-${halfButtonsNumber}*2+1 and ${page}<=${pagesListSize}) or
+                        (${currentPage}+${halfButtonsNumber}>${buttonsNumber} and ${currentPage}!=${pagesListSize} and ${buttonsNumber}%2!=0 and ${currentPage}+${halfButtonsNumber}>${pagesListSize} and ${page}>=${pagesListSize}-${halfButtonsNumber}*2 and ${page}<=${pagesListSize}) or
+                        (${currentPage}==${pagesListSize} and ${page}>${currentPage}-${buttonsNumber})">
+                <a class="btn btn-primary btn-icon-table mr-1"
+                   th:classappend="${currentPage} == ${page} ? 'active':''"
+                   th:text="${page}"
+                   th:href="@{${endpoint}(page=${page}, __(*{searchBy} != null) ? 'searchBy=*{searchBy},' : ''__ __(*{search} != null) ? 'search=*{search},' : ''__ __(*{orderDirection} == 'DESC') ? 'orderDirection=DESC' : ''__ __(*{orderDirection} == 'ASC' ) ? 'orderDirection=ASC' : ''__)}"></a>
+            </li>
+
+            <li th:if="${pagesListSize}>${buttonsNumber} and ${currentPage}+${halfButtonsNumber}<${pagesListSize} and ${currentPage}!=${pagesListSize}"
+                class="page-item">
+                <a class="btn btn-primary btn-icon-table mr-1 disabled"> ...
+                </a>
+            </li>
+
+            <li th:if="${pagesListSize}>${buttonsNumber} and ${currentPage}+${halfButtonsNumber}<${pagesListSize} and ${currentPage}!=${pagesListSize}"
+                class="page-item">
+                <a class="btn btn-primary btn-icon-table mr-1"
+                   th:href="@{${endpoint}(page=${pagesListSize}, __(*{searchBy} != null) ? 'searchBy=*{searchBy},' : ''__ __(*{search} != null) ? 'search=*{search},' : ''__ __(*{orderDirection} == 'DESC') ? 'orderDirection=DESC' : ''__ __(*{orderDirection} == 'ASC' ) ? 'orderDirection=ASC' : ''__)}"
+                   th:text="${pagesListSize}">
+                </a>
+            </li>
+
+            <li th:if="${currentPage}<${pagesListSize}" class="page-item">
+                <a class="btn btn-primary btn-icon-table mr-1"
+                   th:href="@{${endpoint}(page=${currentPage}+1, __(*{searchBy} != null) ? 'searchBy=*{searchBy},' : ''__ __(*{search} != null) ? 'search=*{search},' : ''__ __(*{orderDirection} == 'DESC') ? 'orderDirection=DESC' : ''__ __(*{orderDirection} == 'ASC' ) ? 'orderDirection=ASC' : ''__)}">
+                    Siguiente
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+</body>
+</html>

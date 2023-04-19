@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/css/members.css}"/>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/plugin/bootstrap.min.css}"/>
+    <title>Dummy page</title>
+</head>
+
+<body>
+<form class="mt-5 mb-5 d-flex justify-content-center" method="POST" th:action="@{/web}">
+    <input class="mr-3 w-50" type="text" th:placeholder="Nombre" name="name" required>
+    <button class="btn btn-primary" type="submit"> Crear Miembro</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Acciones</th>
+    </tr>
+    </thead>
+    <tbody th:if="${!membersList.isEmpty()}">
+    <tr th:each="member, memberIter : ${membersList}">
+        <form action="#" method="POST" th:action="@{/web/update}">
+            <td>
+                <input type="hidden" th:value="${member.getUuid()}" name="id">
+                <input class="w-100" type="text" th:value="${member.getName()}" th:placeholder="Nombre" name="name" required>
+            </td>
+            <td>
+                <button class="btn btn-danger delete-button" type="button" data-toggle="modal" data-target="#delete-modal" th:attr="id=${member.getUuid()}, name=${member.getName()}">
+                    Eliminar
+                </button>
+                <button class="btn btn-primary" type="submit"> Actualizar</button>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+
+<div th:insert="~{fragments/pagination :: pagination}"
+     class="col-12 d-flex justify-content-center" th:if="${!pagesList.isEmpty()}"
+     th:with="
+         pagesList=${pagesList},
+         endpoint='/web',
+         currentPage=${currentPage}"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-light">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar member</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span class="text-light" aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" th:action="@{/web/delete}">
+                    <div class="modal-body text-center">
+                        <span th:inline="text"> <span id="body-text-confirm-modal"></span> </span>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="submit" class="btn btn-danger">
+                            <span th:text="Eliminar"></span>
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/plugin/jquery.min.js}"></script>
+<script th:src="@{/plugin/popper.min.js}"></script>
+<script th:src="@{/plugin/bootstrap.min.js}"></script>
+<script th:src="@{/js/members.js}"></script>
+</body>
+</html>

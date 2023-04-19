@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "my.pagination.limit",
+      "type": "java.lang.String",
+      "description": "Description for my.pagination.limit."
+  }
+] }

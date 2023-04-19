@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link rel="stylesheet" type="text/css" media="screen" th:href="@{/plugin/bootstrap.min.css}"/>
+    <title>Login</title>
+</head>
+
+<body>
+<form method="POST" th:action="@{/login}" class="text-center mt-5">
+    <input type="text" id="email" name="username" placeholder="Usuario" required><br>
+
+    <input type="password" id="password" name="password" placeholder="Contraseña" autocomplete="off" required class="mt-3"><br>
+
+    <button class="btn btn-primary mt-3" type="submit" id="submit-button-login">Log in</button>
+</form>
+
+<script th:src="@{/plugin/popper.min.js}"></script>
+<script th:src="@{/plugin/bootstrap.min.js}"></script>
+</body>
+</html>
